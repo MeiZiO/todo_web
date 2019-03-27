@@ -1,10 +1,18 @@
 <template>
   <div>
-     <div class="theAll addbgc">
+    <div class="btgroup">
+      <ButtonGroup shape="circle">
+        <Button @click="add"><Icon type="ios-add" size="26"/></Button>
+        <Button @click="sortByType"><Icon type="ios-aperture-outline" size="26"/></Button>
+        <Button @click="sortByTime"><Icon type="ios-time-outline" size="26"/></Button>
+        <Button @click="toClassification"><Icon type="ios-apps-outline" size="26"/></Button>
+      </ButtonGroup>
+    </div>
+    <!-- <div class="theAll addbgc">
       <div class="child">
         <span class="add"><Icon type="md-add" /></span>
       </div>
-    </div>
+    </div> -->
     <transition-group name="fade" enter-active-class="animated bounceInUp"
         leave-active-class="animated zoomOutDown">
       <template v-for="item in things">
@@ -17,6 +25,54 @@
         </div>
       </template>
     </transition-group>
+    <Modal v-model="addFlag" width="400">
+        <p slot="header" class="addHeader">
+            <Icon type="ios-body" size="30"/>
+            <span>新的ToDo</span>
+        </p>
+        <div style="text-align:center">
+        <div class="addContent">
+            <Row>
+              <Col span="6">
+                做点什么:
+              </Col>      
+              <Col span="16">
+                <Input v-model="addData.name" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="edit.name" />
+              </Col>
+            </Row>
+            <Row>
+            <Col span="4">
+              type: 
+            </Col>
+            <Col span="8">
+            <RadioGroup v-model="addData.type" vertical @on-change="handleMark">
+                <Radio label="alert">
+                  <Icon type="social-apple"></Icon>
+                  <span>紧急</span>
+                </Radio>
+                <Radio label="need">
+                  <Icon type="social-android"></Icon>
+                  <span>一般</span>
+                </Radio>
+                <Radio label="free">
+                  <Icon type="social-windows"></Icon>
+                  <span>闲暇</span>
+                </Radio>
+              </RadioGroup>
+            </Col>
+          </Row>
+          <div class="mark">
+          <Icon type="md-bulb" size="50" :color="markColor"/>
+          </div>
+        </div>
+        </div>
+        <div slot="footer">
+            <!-- <Button type="error" size="large" long :loading="modal_loading" @click="del">Delete</Button> -->
+          <Button type="info" long>加油干噢</Button>
+          <br><br>
+          <Button type="warning" long>我后悔了</Button>
+        </div>
+    </Modal>
    <Drawer :closable="false" width="640" v-model="detailFlag">
       <div class="demo-drawer-profile">
         <Row>
@@ -104,9 +160,32 @@ export default {
       detailFlag: false,
       edit: {},
       editNameFlag: false,
+      addFlag: false,
+      addData: {},
+      markColor: '#ffffff',
     }
   },
   methods:{
+    handleMark (value) {
+      switch (value) {
+        case 'alert': this.markColor ='#ffa3a6'
+        break;
+        case 'need': this.markColor ='#dcffc4'
+        break;
+        case 'free': this.markColor ='#d3f5ff'
+        break;
+      }
+    },
+    add () {
+      this.addFlag = true;
+    },
+    sortByType () {
+      this.$Message.success('按照程度统一排序');
+    },
+    sortByTime () {
+      this.$Message.success('按照时间优先排序');
+    },
+    toClassification () {},
     doIt () {
       this.things =  [
         {name:'待做任务2', type:'need', id: "2"},
@@ -136,7 +215,7 @@ export default {
     transition: all .3s ease-in-out;
   }
   .theAll:hover {
-    width:90%;
+    width:86%;
     height: 60px;
     box-shadow: rgb(216, 216, 216) 5px 5px 5px 5px ;
   }
@@ -194,6 +273,23 @@ export default {
   }
   .addbgc {
     background:#8aa3ac;
+  }
+  .btgroup {
+    text-align: right;
+    padding-bottom: 26px;
+    transform:translate(-10%);
+  }
+  .addHeader {
+    color: #8aa3ac;
+    text-align: center;
+    height: 30px;
+  }
+  .addContent {
+    text-align:center
+  }
+  .mark {
+    float:right;
+    transform:translate(-200%,-140%);
   }
 </style>
 
