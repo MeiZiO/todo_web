@@ -15,6 +15,11 @@ import '../theme/index.less'
 import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 import animated from 'animate.css'
+import {validateRules, rules} from './validate/validate'
+
+Vue.prototype.validateRules = validateRules;
+Vue.prototype.rules = rules;
+
 Vue.use(animated)
 Vue.use(VueHighcharts, { Highcharts });
 Vue.use(iview)

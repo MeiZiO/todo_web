@@ -5,7 +5,15 @@
         <Button @click="add"><Icon type="ios-add" size="26"/></Button>
         <Button @click="sortByType"><Icon type="ios-aperture-outline" size="26"/></Button>
         <Button @click="sortByTime"><Icon type="ios-time-outline" size="26"/></Button>
-        <Button @click="toClassification"><Icon type="ios-apps-outline" size="26"/></Button>
+        <!-- <Button @click="toClassification"><Icon type="ios-apps-outline" size="26"/></Button> -->
+        <Poptip placement="right" width="400">
+          <Button class="tailBt"><Icon type="ios-apps-outline" size="26"/></Button>
+          <div class="api" slot="content">
+            <CheckboxGroup v-model="searchData">
+              <Checkbox v-for="item in serachTagData" :label="item.label" :key="item.key"></Checkbox>
+            </CheckboxGroup>
+          </div>
+        </Poptip>
       </ButtonGroup>
     </div>
     <!-- <div class="theAll addbgc">
@@ -21,163 +29,47 @@
             <span class="name">{{item.name}}</span>
             <span :class="checkClass" @click="doIt(item.id)"><Icon type="md-checkmark" /></span>
             <span class="handle" @click="showDetail(item)"><Icon type="ios-alert-outline" /></span>
+            <span class="fontcolor"><Time :time="time3" type="relative" :interval="1"/></span>
           </div>
         </div>
       </template>
     </transition-group>
-    <Modal v-model="addFlag" width="400">
-        <p slot="header" class="addHeader">
-            <Icon type="ios-body" size="30"/>
-            <span>新的ToDo</span>
-        </p>
-        <div style="text-align:center">
-        <div class="addContent">
-            <Row>
-              <Col span="6">
-                做点什么:
-              </Col>      
-              <Col span="16">
-                <Input v-model="addData.name" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="edit.name" />
-              </Col>
-            </Row>
-            <Row>
-            <Col span="4">
-              type: 
-            </Col>
-            <Col span="8">
-            <RadioGroup v-model="addData.type" vertical @on-change="handleMark">
-                <Radio label="alert">
-                  <Icon type="social-apple"></Icon>
-                  <span>紧急</span>
-                </Radio>
-                <Radio label="need">
-                  <Icon type="social-android"></Icon>
-                  <span>一般</span>
-                </Radio>
-                <Radio label="free">
-                  <Icon type="social-windows"></Icon>
-                  <span>闲暇</span>
-                </Radio>
-              </RadioGroup>
-            </Col>
-          </Row>
-          <div class="mark">
-          <Icon type="md-bulb" size="50" :color="markColor"/>
-          </div>
-        </div>
-        </div>
-        <div slot="footer">
-            <!-- <Button type="error" size="large" long :loading="modal_loading" @click="del">Delete</Button> -->
-          <Button type="info" long>加油干噢</Button>
-          <br><br>
-          <Button type="warning" long>我后悔了</Button>
-        </div>
-    </Modal>
-   <Drawer :closable="false" width="640" v-model="detailFlag">
-      <div class="demo-drawer-profile">
-        <Row>
-          <Col span="12">
-            Full Name: Aresn
-          </Col>
-          <Col span="12">
-            Account: aresn@aresn.com
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            City: BeiJing
-          </Col>
-          <Col span="12">
-            Country: China
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            Birthday: May 14, 1991
-          </Col>
-          <Col span="12">
-            Website: <a href="https://dev.iviewui.com" target="_blank">https://dev.iviewui.com</a>
-          </Col>
-        </Row>
-        Message: Hello, Developer
-      </div>
-      <Divider />
-      <div class="drawerBase">
-        <Row>
-          <Col span="4">
-          任务名：
-          <span  @click="editNameFlag=!editNameFlag"><Icon type="md-create" /></span>
-          </Col>
-          <Col span="8" v-show="!editNameFlag">
-            {{edit.name}}
-          </Col>
-          <Col span="8" v-show="editNameFlag">
-          <Input @on-blur="handleNameEdit" autofocus v-model="edit.name" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="edit.name" />
-          </Col>
-        </Row>
-        <Divider />
-        <Row>
-          <Col span="12">
-            id: {{edit.id}}
-          </Col>
-        </Row>
-        <Row>
-          <Col span="4">
-            type: 
-          </Col>
-          <Col span="8">
-           <RadioGroup v-model="edit.type" vertical>
-              <Radio label="alert">
-                <Icon type="social-apple"></Icon>
-                <span>紧急</span>
-              </Radio>
-              <Radio label="need">
-                <Icon type="social-android"></Icon>
-                <span>一般</span>
-              </Radio>
-              <Radio label="free">
-                <Icon type="social-windows"></Icon>
-                <span>闲暇</span>
-              </Radio>
-            </RadioGroup>
-          </Col>
-        </Row>
-      </div>
-    </Drawer>
+    <add-modal ref="addModal"></add-modal>
+    <detail-dra ref="detailDra"></detail-dra>
+    
   </div>
 </template>
 
+
+
 <script>
+import addModal from './component/toDayAdd';
+import detailDra from './component/toDayDrawer'
 export default {
   data(){
     return {
+      searchTagFlag: false,
+      searchData: [],
+      time3: (new Date()).getTime()+1000*6,
+      rules: this.rules(),
       things: [
         {name:'待做任务1', type:'alert', id: "1"},
         {name:'待做任务2', type:'need', id: "2"},
         {name:'待做任务3', type:'free', id: "3"}
       ],
       checkClass: 'handle',
-      detailFlag: false,
-      edit: {},
-      editNameFlag: false,
-      addFlag: false,
-      addData: {},
-      markColor: '#ffffff',
+      serachTagData: [
+        { "key": "1", "label": "已有标签1", "disabled": false },
+        { "key": "2", "label": "已有标签2", "disabled": true },
+        { "key": "3", "label": "已有标签3", "disabled": false }
+      ],
     }
   },
   methods:{
-    handleMark (value) {
-      switch (value) {
-        case 'alert': this.markColor ='#ffa3a6'
-        break;
-        case 'need': this.markColor ='#dcffc4'
-        break;
-        case 'free': this.markColor ='#d3f5ff'
-        break;
-      }
-    },
     add () {
+      this.addData={};
       this.addFlag = true;
+      this.$refs.addModal.show();
     },
     sortByType () {
       this.$Message.success('按照程度统一排序');
@@ -185,7 +77,9 @@ export default {
     sortByTime () {
       this.$Message.success('按照时间优先排序');
     },
-    toClassification () {},
+    toClassification () {
+      this.searchTagFlag = !this.searchTagFlag;
+    },
     doIt () {
       this.things =  [
         {name:'待做任务2', type:'need', id: "2"},
@@ -194,12 +88,16 @@ export default {
     },
     showDetail (item) {
       this.detailFlag = true;
-      this.edit = item;
+      this.$refs.detailDra.show();
+      this.$refs.detailDra.init(item);
     },
-    handleNameEdit () {
-      this.editNameFlag = !this.editNameFlag;
-    }
-  }
+  },
+  computed: {
+
+  },
+  components : {
+    addModal,detailDra
+  },
 }
 </script>
 
@@ -243,7 +141,7 @@ export default {
     left: 100px;
     transform:translate(-50%,-50%); */
     float: left;
-    width: 80%;
+    width: 70%;
     text-align: left;
     padding-left: 30px;
     overflow: hidden;
@@ -261,12 +159,6 @@ export default {
   .check {
     color:#4ffb5b;
   }
-  .drawerBase {
-    font-size: 16px;
-  }
-  .edit {
-    padding-left: 15x;
-  }
   .add {
     font-size: 40px;
     color:#4ffb5b;
@@ -279,17 +171,10 @@ export default {
     padding-bottom: 26px;
     transform:translate(-10%);
   }
-  .addHeader {
-    color: #8aa3ac;
-    text-align: center;
-    height: 30px;
-  }
-  .addContent {
-    text-align:center
-  }
-  .mark {
-    float:right;
-    transform:translate(-200%,-140%);
+  .fontcolor {
+    color: #a09da4;  }
+  .tailBt {
+    border-radius: 0 32px 32px 0!important;
   }
 </style>
 

@@ -30,7 +30,7 @@
         <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
           <Layout>
             <Sider hide-trigger :style="{background: '#fff'}">
-              <Menu active-name="1-2" theme="light" width="auto" :accordion="true" :open-names="['1']" on-select="handleSideClick">
+              <Menu theme="light" width="auto" :accordion="true"  on-select="handleSideClick">
                 <Submenu name="1">
                   <template slot="title">
                     <Icon type="md-checkmark" />
@@ -67,7 +67,7 @@
           </Layout>
         </Content>
       </Layout>
-      <Footer class="layout-footer-center">2019 &copy; YangXinMei</Footer>
+      <Footer class="layout-footer-center">2019 &copy; 杨鑫梅</Footer>
     </Layout>
   </div>
 </template>
