@@ -57,10 +57,10 @@
           </Row>
           <Row>
             <Col span="24">
-              <div v-show="showMore" @click="showMore=!showMore">
-                <a href="javascript:void(0)">
-                  更多<Icon type="ios-arrow-down" />
-                </a>
+              <div v-show="showMore" @click="showMore=!showMore" >
+                <!-- <a href="javascript:void(0)"> -->
+                <span style="color:#2d8cf0;">更多<Icon type="ios-arrow-down" /></span>
+                <!-- </a> -->
               </div>
               <div v-show="!showMore" @click="showMore=!showMore">
                 <a href="javascript:void(0)">
@@ -164,7 +164,7 @@
               </Col>
             </Row>
             <Row>&nbsp;</Row>
-            <Row>
+            <Row v-show="addData.item1 == 'own'">
               <Col span="4">&nbsp;</Col>
               <Col span="4">
                 重复次数：
@@ -183,7 +183,7 @@
             </Row>
             <Row>&nbsp;</Row>
             <!-- 月 -->
-            <Row >
+            <Row>
               <Col span="4">&nbsp;</Col>
               <Col span="4">
                 月重复类型：
@@ -195,7 +195,7 @@
               </Col>
             </Row>
             <Row>&nbsp;</Row>
-            <Row>
+            <Row v-show="addData.item2 == 'own'">
               <Col span="4">&nbsp;</Col>
               <Col span="4">
                 重复次数：
@@ -214,7 +214,7 @@
             </Row>
             <Row>&nbsp;</Row>
             <!-- 日 -->
-            <Row >
+            <Row>
               <Col span="4">&nbsp;</Col>
               <Col span="4">
                 日重复类型：
@@ -226,7 +226,7 @@
               </Col>
             </Row>
             <Row>&nbsp;</Row>
-            <Row>
+            <Row v-show="addData.item3 == 'own'">
               <Col span="4">&nbsp;</Col>
               <Col span="4">
                 重复次数：

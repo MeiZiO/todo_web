@@ -6,14 +6,19 @@
         <Button @click="sortByType"><Icon type="ios-aperture-outline" size="26"/></Button>
         <Button @click="sortByTime"><Icon type="ios-time-outline" size="26"/></Button>
         <!-- <Button @click="toClassification"><Icon type="ios-apps-outline" size="26"/></Button> -->
-        <Poptip placement="right" width="400">
+        <!-- <div style="z-index:100;"> -->
+        <Poptip placement="right" width="400" word-wrap transfer>
           <Button class="tailBt"><Icon type="ios-apps-outline" size="26"/></Button>
-          <div class="api" slot="content">
-            <CheckboxGroup v-model="searchData">
-              <Checkbox v-for="item in serachTagData" :label="item.label" :key="item.key"></Checkbox>
+          <div class="selectTag" slot="content">
+            <CheckboxGroup v-model="searchData" indeterminate>
+              <div class="showTagContent" v-for="item in serachTagData" :key="item.key">
+              <Checkbox :label="item.label"></Checkbox>
+              </div>
             </CheckboxGroup>
+            <Button shape="circle" icon="ios-search"></Button>
           </div>
         </Poptip>
+        <!-- </div> -->
       </ButtonGroup>
     </div>
     <!-- <div class="theAll addbgc">
@@ -34,8 +39,12 @@
         </div>
       </template>
     </transition-group>
+    <Row>&nbsp;</Row>
+      <div class="floatR animated bounceInUp">
+        <Page :total="40" size="small" show-elevator show-sizer show-total :page-size-opts="[5, 10, 20, 50]"/>
+      </div>
     <add-modal ref="addModal"></add-modal>
-    <detail-dra ref="detailDra"></detail-dra>
+    <detail-dra ref="detailDra" ></detail-dra>
     
   </div>
 </template>
@@ -52,16 +61,16 @@ export default {
       searchData: [],
       time3: (new Date()).getTime()+1000*6,
       rules: this.rules(),
-      things: [
-        {name:'待做任务1', type:'alert', id: "1"},
-        {name:'待做任务2', type:'need', id: "2"},
-        {name:'待做任务3', type:'free', id: "3"}
-      ],
       checkClass: 'handle',
       serachTagData: [
         { "key": "1", "label": "已有标签1", "disabled": false },
         { "key": "2", "label": "已有标签2", "disabled": true },
-        { "key": "3", "label": "已有标签3", "disabled": false }
+        { "key": "3", "label": "已有标签3", "disabled": false },
+      ],
+      things: [
+        {name:'待做任务1', type:'alert', id: "1", remark:'我是备注'},
+        {name:'待做任务2', type:'need', id: "2", remark:'我是备注'},
+        {name:'待做任务3', type:'free', id: "3", remark:'我是备注'}
       ],
     }
   },
@@ -176,5 +185,23 @@ export default {
   .tailBt {
     border-radius: 0 32px 32px 0!important;
   }
+  .selectTag {
+    padding: 14px 10px 6px 10px;
+  }
+  .showTagContent {
+    float: left;
+    width: 110px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+  }
+  .a {
+    box-shadow: rgb(216, 216, 216) 5px 5px 5px 5px ;
+    
+  }
+  .floatR {
+  float: right;
+  /* color: #80ff80; */
+}
 </style>
 

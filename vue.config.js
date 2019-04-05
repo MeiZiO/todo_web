@@ -48,7 +48,8 @@ module.exports = {
         proxy:  {
             //配置跨域
             'api':{
-                target: "10.168.1.234:8088", //http:192.168.1.105:8088
+                // target: "10.168.1.234:8088", //http:192.168.1.105:8088
+                target: "192.168.0.107:8088", //http:192.168.1.105:8088
                 ws: true,//是否开启跨域
                 changOrigin: true,
                 pathRewrite: {

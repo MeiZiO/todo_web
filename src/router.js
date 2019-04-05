@@ -11,9 +11,15 @@ const router = new Router({
       // component: resolve=> require(['./App.vue'],resolve),
       component: resolve=> require(['./views/main/index.vue'],resolve),
       children: [
-        {path: 'personal/info', name: 'personnInfo',component: resolve=> require(['./views/personal/info.vue'],resolve)},
+        {path: 'personal/info', name: 'info',component: resolve=> require(['./views/personal/info.vue'],resolve)},
+        {path: 'us', name: 'us',component: resolve=> require(['./views/personal/us.vue'],resolve)},
         {path: 'charts/day', name: 'day',component: resolve=> require(['./views/charts/day.vue'],resolve)},
         {path: 'todo/today', name: 'today',component: resolve=> require(['./views/todo/today.vue'],resolve)},
+        {path: 'todo/yesterday', name: 'yesterday',component: resolve=> require(['./views/todo/yesterday.vue'],resolve)},
+        {path: 'statistics/week', name: 'week',component: resolve=> require(['./views/statistics/week.vue'],resolve)},
+        {path: 'statistics/month', name: 'month',component: resolve=> require(['./views/statistics/month.vue'],resolve)},
+        {path: 'statistics/tomorrow', name: 'tomorrow',component: resolve=> require(['./views/todo/tomorrow.vue'],resolve)},
+        {path: 'nav/pandect', name: 'pandect',component: resolve=> require(['./views/nav/pandect.vue'],resolve)},
         // {path: 'info', name: 'personnInfo',component: () => import ('./views/personal/info.vue')}
       ]
     },

@@ -5,17 +5,21 @@
         <Menu mode="horizontal" theme="dark" active-name="1" on-select="handleNavClick">
           <div class="layout-logo"></div>
           <div class="layout-nav">
-            <MenuItem name="1" :to="{path:'/pandect'}">
+            <MenuItem name="1" :to="{name:'pandect'}">
               <Icon type="md-pie" />
               总览
             </MenuItem>
-            <MenuItem name="2" :to="{path:'/pandect'}">
+            <MenuItem name="2" :to="{name:'today'}">
               <Icon type="md-clipboard"/>
               今日
             </MenuItem>
-            <MenuItem name="3" :to="{name:'personnInfo'}">
+            <MenuItem name="3" :to="{name:'info'}">
               <Icon type="md-person" />
               个人中心
+            </MenuItem>
+            <MenuItem name="4" :to="{name:'us'}">
+              <Icon type="md-book" />
+              关于我们
             </MenuItem>
           </div>
         </Menu>
@@ -36,9 +40,9 @@
                     <Icon type="md-checkmark" />
                     ToDo  
                   </template>
-                  <MenuItem name="1-1"><Icon type="ios-notifications-off" />曾经</MenuItem>
+                  <MenuItem name="1-1" :to="{name:'yesterday'}"><Icon type="ios-notifications-off" />曾经</MenuItem>
                   <MenuItem name="1-2" :to="{name:'today'}"><Icon type="md-bicycle" />现在</MenuItem>
-                  <MenuItem name="1-3"><Icon type="md-notifications-outline" />未来</MenuItem>
+                  <MenuItem name="1-3" :to="{name:'tomorrow'}"><Icon type="md-notifications-outline" />未来</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                   <template slot="title">
@@ -46,11 +50,10 @@
                     统计
                   </template>
                   <MenuItem name="2-1" :to="{name:'day'}"><Icon type="ios-happy-outline"/>天</MenuItem>
-                  <MenuItem name="2-2"><Icon type="ios-beer-outline" />周</MenuItem>
-                  <MenuItem name="2-3"><Icon type="ios-thumbs-up-outline" />月</MenuItem>
-                  <MenuItem name="2-4"><Icon type="ios-trophy-outline" />年</MenuItem>
+                  <MenuItem name="2-2" :to="{name:'week'}"><Icon type="ios-beer-outline" />周</MenuItem>
+                  <MenuItem name="2-3" :to="{name:'month'}"><Icon type="ios-thumbs-up-outline" />月</MenuItem>
                 </Submenu>
-                <Submenu name="3">
+                <!-- <Submenu name="3">
                   <template slot="title">
                     <Icon type="ios-calendar-outline" />
                     某天
@@ -58,7 +61,7 @@
                   <MenuItem name="1-1"><Icon type="md-heart" />回忆</MenuItem>
                   <MenuItem name="1-2"><Icon type="md-headset" />眼前</MenuItem>
                   <MenuItem name="1-3"><Icon type="md-heart-outline" />展望</MenuItem>
-                </Submenu>
+                </Submenu> -->
               </Menu>
             </Sider>
             <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
@@ -110,7 +113,7 @@ export default {
     left: 20px;
 }
 .layout-nav{
-    width: 420px;
+    width: 430px;
     margin: 0 auto;
     margin-right: 20px;
 }
