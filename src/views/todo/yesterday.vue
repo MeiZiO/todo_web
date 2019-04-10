@@ -5,7 +5,7 @@
           <Input placeholder="请输入名称" search enter-button/>
         </Col>
         <Col span="2">
-          <Button shape="circle" type="success" ghost>加入今日</Button>
+          <Button shape="circle" type="success" ghost @click.native="addToday">加入今日</Button>
         </Col>
         <Col span="2">
           <Button shape="circle" type="info" ghost>加入明日</Button>
@@ -155,6 +155,25 @@ export default {
     }
   },
   methods: {
+    addToday () {
+      // this.$http({
+      //     method: 'POST',
+      //     url: '/todo/add',
+      //     data: '{id:123}'
+      //   }).then(data => {
+      //     if (data.success) {
+      //       
+      //     }
+      //   });
+
+      this.$axios({
+        method: 'POST',
+        url: '/todo/add',
+        data: {'id': '123'}
+      }).then(data => {
+       
+      });
+    },
     cliclRow (item) {
       this.temp = item;
     },
