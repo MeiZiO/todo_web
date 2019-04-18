@@ -169,7 +169,7 @@ export default {
       this.$axios({
         method: 'POST',
         url: '/todo/add',
-        data: {'id': '123'}
+        data: {'id': '123'},
       }).then(data => {
        
       });

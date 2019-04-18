@@ -5,8 +5,9 @@ import axios from 'axios'
 import qs from 'qs'
 
 const instance = axios.create({
-    baseURL: "http://10.168.1.235:3000",
-    // baseURL: "http://10.20.50.46:3000", // api的base_url http://39.104.64.179:8088
+    // baseURL: "http://192.168.0.107:3000",
+    baseURL: "http://10.20.50.125:3000", // api的base_url http://39.104.64.179:8088
+    // baseURL: "http://10.168.1.235:3000",
     timeout: 10000,               // 请求超时时间
     // transformRequest: data => qs.stringify(data) 
     headers: {

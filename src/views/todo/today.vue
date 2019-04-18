@@ -34,18 +34,22 @@
             <span class="name">{{item.name}}</span>
             <span :class="checkClass" @click="doIt(item.id)"><Icon type="md-checkmark" /></span>
             <span class="handle" @click="showDetail(item)"><Icon type="ios-alert-outline" /></span>
-            <span class="fontcolor"><Time :time="time3" type="relative" :interval="1"/></span>
+            <span class="fontcolor" v-show="item.timepoint != 0"><Time :time="item.timepoint" type="relative" :interval="1"/></span>
+            <!-- v-show="item.timepoint" -->
           </div>
         </div>
       </template>
     </transition-group>
     <Row>&nbsp;</Row>
       <div class="floatR animated bounceInUp">
-        <Page :total="40" size="small" show-elevator show-sizer show-total :page-size-opts="[5, 10, 20, 50]"/>
+        <Page :total="total" size="small" show-elevator show-sizer show-total :page-size-opts="[5, 10, 20, 50]"
+          :page-size="params.rows"
+          :current = "params.page"
+          @on-page-size-change= "pageSizeHandle"
+          @on-change="pageHandle"/>
       </div>
     <add-modal ref="addModal"></add-modal>
     <detail-dra ref="detailDra" ></detail-dra>
-    
   </div>
 </template>
 
@@ -54,6 +58,7 @@
 <script>
 import addModal from './component/toDayAdd';
 import detailDra from './component/toDayDrawer'
+import { constants } from 'crypto';
 export default {
   data(){
     return {
@@ -67,21 +72,64 @@ export default {
         { "key": "2", "label": "已有标签2", "disabled": true },
         { "key": "3", "label": "已有标签3", "disabled": false },
       ],
-      things: [
-        {name:'待做任务1', type:'alert', id: "1", remark:'我是备注'},
-        {name:'待做任务2', type:'need', id: "2", remark:'我是备注'},
-        {name:'待做任务3', type:'free', id: "3", remark:'我是备注'}
-      ],
+      // things: [
+      //   {name:'待做任务1', type:'alert', id: "1", remark:'我是备注'},
+      //   {name:'待做任务2', type:'need', id: "2", remark:'我是备注'},
+      //   {name:'待做任务3', type:'free', id: "3", remark:'我是备注'}
+      // ],
+      things: [],
+      params: {
+        page: 1,
+        rows: 10,
+      },
+      total: 0,
     }
   },
   methods:{
+    pageSizeHandle (size) {
+      this.params.rows = size;
+      this.params.page = 1;
+      this.getData();
+    },
+    pageHandle (index) {
+      this.params.page = index;
+      this.getData();
+    },
+    getDataHandle () {
+      this.params = {
+        page: 1,
+        rows: 10,
+      };
+      this.getData ();
+    },
+    getData () {
+      this.$axios({
+        method: 'post',
+        url: '/list/todo/today',
+        data: this.params
+      }).then( data => {
+        if(data.data.success){
+          this.things = data.data.data;
+          this.total = data.data.total;
+        }else {
+          this.$Message.error('查询失败，请刷新');
+        }
+      });
+    },
     add () {
       this.addData={};
       this.addFlag = true;
       this.$refs.addModal.show();
+      this.$refs.addModal.initTagData();
     },
     sortByType () {
       this.$Message.success('按照程度统一排序');
+      this.$axios({
+        method: 'post',
+        url: '/test'
+      }).then( data => {
+
+      });
     },
     sortByTime () {
       this.$Message.success('按照时间优先排序');
@@ -89,11 +137,16 @@ export default {
     toClassification () {
       this.searchTagFlag = !this.searchTagFlag;
     },
-    doIt () {
-      this.things =  [
-        {name:'待做任务2', type:'need', id: "2"},
-        {name:'待做任务3', type:'free', id: "3"}
-      ];
+    doIt (id) {
+      this.$axios({
+        method: 'post',
+        url: '/today/doit',
+        data: id
+      }).then( data => {
+        if(data.data.success) {
+          this.$Message.success('恭喜你！just do it!');
+        }
+      });
     },
     showDetail (item) {
       this.detailFlag = true;
@@ -106,6 +159,12 @@ export default {
   },
   components : {
     addModal,detailDra
+  },
+  mounted () {
+    localStorage.setItem('userId', 1);
+  },
+  created() {
+    this.getDataHandle();
   },
 }
 </script>
