@@ -16,6 +16,7 @@ import animated from 'animate.css'
 import {validateRules, rules} from './validate/validate'
 import './assets/css/base.css'
 import echarts from 'echarts'
+import * as filters from './filters';
 
 
 
@@ -30,6 +31,11 @@ Vue.use(iview)
 
 Vue.config.productionTip = false
 
+
+// 注册全局过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]);
+});
 
 new Vue({
   router,

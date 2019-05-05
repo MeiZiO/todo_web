@@ -8,6 +8,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
+      redirect: '/todo/today',
       // component: resolve=> require(['./App.vue'],resolve),
       component: resolve=> require(['./views/main/index.vue'],resolve),
       children: [
@@ -20,6 +21,8 @@ const router = new Router({
         {path: 'statistics/month', name: 'month',component: resolve=> require(['./views/statistics/month.vue'],resolve)},
         {path: 'statistics/tomorrow', name: 'tomorrow',component: resolve=> require(['./views/todo/tomorrow.vue'],resolve)},
         {path: 'nav/pandect', name: 'pandect',component: resolve=> require(['./views/nav/pandect.vue'],resolve)},
+        {path: 'event', name: 'event',component: resolve=> require(['./views/event/list.vue'],resolve)},
+        {path: 'dayBefore', name: 'dayBefore',component: resolve=> require(['./views/charts/before.vue'],resolve)},
         // {path: 'info', name: 'personnInfo',component: () => import ('./views/personal/info.vue')}
       ]
     },

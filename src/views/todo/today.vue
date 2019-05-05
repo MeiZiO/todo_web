@@ -8,14 +8,19 @@
         <!-- <Button @click="toClassification"><Icon type="ios-apps-outline" size="26"/></Button> -->
         <!-- <div style="z-index:100;"> -->
         <Poptip placement="right" width="400" word-wrap transfer>
-          <Button class="tailBt"><Icon type="ios-apps-outline" size="26"/></Button>
+          <Button class="tailBt" @click="getTagData"><Icon type="ios-apps-outline" size="26"/></Button>
           <div class="selectTag" slot="content">
             <CheckboxGroup v-model="searchData" indeterminate>
               <div class="showTagContent" v-for="item in serachTagData" :key="item.key">
               <Checkbox :label="item.label"></Checkbox>
               </div>
             </CheckboxGroup>
-            <Button shape="circle" icon="ios-search"></Button>
+            <div class="showTagContent">
+              <Button shape="circle" icon="ios-search" @click="sortByTag"></Button>
+            </div>
+            <div class="showTagContent">
+              <Button shape="circle" icon="md-close" @click="cancelTag"></Button>
+            </div>
           </div>
         </Poptip>
         <!-- </div> -->
@@ -80,12 +85,28 @@ export default {
       things: [],
       params: {
         page: 1,
-        rows: 10,
+        rows: 5,
+        type: '',
       },
       total: 0,
     }
   },
   methods:{
+    cancelTag () {
+      this.searchData=[];
+      this.params.type = '';
+      this.getData();
+    },
+    sortByTag () {
+      this.$nextTick(() => {
+        this.params.type = 'tag';
+        this.params.tagData = this.searchData;
+        this.getData();
+      });
+    },
+    getTagData(){
+      this.initTagData();
+    },
     pageSizeHandle (size) {
       this.params.rows = size;
       this.params.page = 1;
@@ -98,11 +119,12 @@ export default {
     getDataHandle () {
       this.params = {
         page: 1,
-        rows: 10,
+        rows: 5,
       };
       this.getData ();
     },
     getData () {
+      this.params.userId = localStorage.getItem("userId");
       this.$axios({
         method: 'post',
         url: '/list/todo/today',
@@ -123,35 +145,57 @@ export default {
       this.$refs.addModal.initTagData();
     },
     sortByType () {
-      this.$Message.success('按照程度统一排序');
-      this.$axios({
-        method: 'post',
-        url: '/test'
-      }).then( data => {
-
+      this.$nextTick(() => {
+        if (this.params.type == 'type') {
+          this.params.type = '';
+        }else{
+          this.params.type = 'type';
+        }
+        this.getData();
       });
     },
     sortByTime () {
-      this.$Message.success('按照时间优先排序');
+      this.$nextTick( () => {
+        if (this.params.type == 'time') {
+          this.params.type = '';
+        }else{
+          this.params.type = 'time';
+        }
+        this.getData();
+      });
     },
     toClassification () {
       this.searchTagFlag = !this.searchTagFlag;
     },
     doIt (id) {
+      console.log(id,'id');
       this.$axios({
         method: 'post',
         url: '/today/doit',
-        data: id
+        data: {'id': id, 'userid': localStorage.getItem('userId')}
       }).then( data => {
         if(data.data.success) {
           this.$Message.success('恭喜你！just do it!');
+          this.getData();
         }
       });
     },
     showDetail (item) {
-      this.detailFlag = true;
-      this.$refs.detailDra.show();
-      this.$refs.detailDra.init(item);
+      // this.$refs.detailDra.show();
+      this.$refs.detailDra.init(item.id);
+    },
+    // 初始化可选标签数据
+    initTagData () {
+       this.$axios({
+        method: 'POST',
+        url: '/tagData/list',
+      }).then(data => {
+        if (data.data.success) {
+          this.serachTagData = data.data.data;
+        }else{
+          this.$Message.success('标签刷新失败，请重试');
+        }
+      });
     },
   },
   computed: {
@@ -162,6 +206,12 @@ export default {
   },
   mounted () {
     localStorage.setItem('userId', 1);
+    this.$axios({
+      method: 'post',
+      url: '/init',
+      data:{'userid': localStorage.getItem('userId')}
+    }).then( data => {
+    });
   },
   created() {
     this.getDataHandle();

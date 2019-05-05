@@ -42,16 +42,18 @@
                   </template>
                   <MenuItem name="1-1" :to="{name:'yesterday'}"><Icon type="ios-notifications-off" />曾经</MenuItem>
                   <MenuItem name="1-2" :to="{name:'today'}"><Icon type="md-bicycle" />现在</MenuItem>
-                  <MenuItem name="1-3" :to="{name:'tomorrow'}"><Icon type="md-notifications-outline" />未来</MenuItem>
+                  <!-- <MenuItem name="1-3" :to="{name:'tomorrow'}"><Icon type="md-notifications-outline" />未来</MenuItem> -->
                 </Submenu>
                 <Submenu name="2">
                   <template slot="title">
                     <Icon type="md-stats" />
                     统计
                   </template>
-                  <MenuItem name="2-1" :to="{name:'day'}"><Icon type="ios-happy-outline"/>天</MenuItem>
-                  <MenuItem name="2-2" :to="{name:'week'}"><Icon type="ios-beer-outline" />周</MenuItem>
-                  <MenuItem name="2-3" :to="{name:'month'}"><Icon type="ios-thumbs-up-outline" />月</MenuItem>
+                  <MenuItem name="2-1" :to="{name:'day'}"><Icon type="ios-happy-outline"/>今日历程</MenuItem>
+                  <MenuItem name="2-5" :to="{name:'dayBefore'}"><Icon type="ios-happy-outline"/>往日历程</MenuItem>
+                  <!-- <MenuItem name="2-2" :to="{name:'week'}"><Icon type="ios-beer-outline" />周</MenuItem> -->
+                  <!-- <MenuItem name="2-3" :to="{name:'month'}"><Icon type="ios-thumbs-up-outline" />月</MenuItem> -->
+                  <MenuItem name="2-4" :to="{name:'event'}"><Icon type="md-clipboard" />事件清单</MenuItem>
                 </Submenu>
                 <!-- <Submenu name="3">
                   <template slot="title">

@@ -390,7 +390,6 @@ export default {
     // 新增Todo的确定按钮
     sumbitAdd () {
       this.addData.userId = localStorage.getItem('userId');
-      console.log(this.addData.tagData, 'this.addData.tagData');
       if (this.addData.name == '' || this.addData.name == undefined) {
         this.$Message.error('请填写你想做的事情');
         return;

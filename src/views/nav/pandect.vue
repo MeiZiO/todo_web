@@ -1,7 +1,35 @@
 <template>
   <div>
-    <temp id="container" class="floatL" :style="{width: '40%', height: '600px'}" :option="chartOption" @click="show"></temp>
-    <temp id="container2" class="floatL" :style="{width: '40%', height: '600px'}" :option="chartOption" @click="show"></temp>
+    <Row>
+      <Col span="12">
+        <div class="contentFather">
+          <span v-if="!hasYesterday"  class="content">
+            无昨日数据
+          </span>
+        </div>
+      </Col>
+      <Col span="12">
+        <temp id="container" class="floatL" :style="{width: '100%', height: '600px'}" :option="chartOptionY" @click="show" v-if="hasYesterday"></temp>
+      </Col>
+      <Col span="12">
+        <temp id="container2" class="floatL" :style="{width: '100%', height: '600px'}" :option="chartOption" @click="show"></temp>
+      </Col>
+    </Row>
+    <Row>
+      <Col span="12">
+        <div v-if="hasYesterday" class="title">
+          昨天的情况概览
+        </div>
+        <div v-if="!hasYesterday">
+          &nbsp;
+        </div>
+      </Col>
+      <Col span="12">
+        <div class="title">
+          今天的情况概览
+        </div>
+      </Col>
+    </Row>
   </div>
 </template>
 
@@ -12,7 +40,13 @@ import temp from '../charts/echarts.vue'
 export default {
   data() {
     return {
-      chartOption: {}
+      hasYesterday: true,
+      chartOption: {},
+      data: [],
+      names: [],
+      chartOptionY: {},
+      datay: [],
+      namesy: [],
     };
   },
   components :{
@@ -22,60 +56,133 @@ export default {
     show (item) {
       console.log(item, 'item');
     },
+    // 查询今天的统计
     initCharts () {
-       
-this.chartOption = {
-    tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        x: 'left',
-        data:['直接访问','邮件营销','联盟广告','视频广告','aa']
-    },
-    series: [
-        {
-            color:['#ff80ff','#ff8080','#fad797','#808080','#80ff80'],
-            name:'访问来源',
-            type:'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-                normal: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    show: true,
-                    textStyle: {
-                        fontSize: '30',
-                        fontWeight: 'bold'
-                    }
-                }
+      this.$axios({
+        method: 'post',
+        url: '/pandect',
+        data:{'userid': localStorage.getItem('userId')}
+      }).then( data => {
+        if(data.data.success) {
+          this.data = data.data.data;
+          this.names = data.data.names;
+          this.chartOption = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} <br/>占比：({d}%)"
             },
-            labelLine: {
-                normal: {
-                    show: false
-                }
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:this.names
             },
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:135, name:'aa'},
-            ]
+            title: [{
+              text: '今日进度图',
+              top:'47%',
+              left:'40%',
+              textStyle:{
+                  color: '#808080',
+                  fontSize: 28,
+                  fontWeight: 'normal',
+              }
+            }],
+            series: [
+                {
+                    color:['#ff80ff','#808080','#fad797'],
+                    // name:'访问来源',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:this.data 
+                }
+            ],
+          };
         }
-    ]
-};
+      });
+      
 
-
-
-
-
+      this.$axios({
+        method: 'post',
+        url: '/pandect/Yestday',
+        data:{'userid': localStorage.getItem('userId')}
+      }).then( data => {
+        if(data.data.success) {
+          this.dataY = data.data.data;
+          this.namesY = data.data.names;
+          console.log(this.data, 'this.data')
+          console.log(this.names,'this.names');
+          this.chartOptionY = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} <br/>占比：({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:this.namesY
+            },
+            title: [{
+              text: '今日进度图',
+              top:'47%',
+              left:'40%',
+              textStyle:{
+                  color: '#808080',
+                  fontSize: 28,
+                  fontWeight: 'normal',
+              }
+            }],
+            series: [
+                {
+                    color:['#ff80ff','#808080','#fad797'],
+                    // name:'访问来源',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:this.dataY 
+                }
+            ]
+          };
+        }else {
+          this.hasYesterday = false;
+        }
+      });
     },
-    
   },
   mounted() {
     this.initCharts();
@@ -86,6 +193,18 @@ this.chartOption = {
 <style>
 .floatL{
   float: left;
+}
+.title {
+   font-size: 28px;
+   color: #808080;
+}
+.contentFather {
+    height: 600px;
+  }
+.content {
+  font-size: 28px;
+  color: #808080;
+  line-height: 600px;
 }
 </style>
 
