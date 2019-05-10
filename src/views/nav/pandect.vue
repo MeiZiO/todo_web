@@ -1,9 +1,9 @@
 <template>
   <div>
     <Row>
-      <Col span="12">
+      <Col span="12" v-if="!hasYesterday" >
         <div class="contentFather">
-          <span v-if="!hasYesterday"  class="content">
+          <span class="content">
             无昨日数据
           </span>
         </div>
@@ -78,8 +78,8 @@ export default {
             },
             title: [{
               text: '今日进度图',
-              top:'47%',
-              left:'40%',
+              top:'55%',
+              left:'38%',
               textStyle:{
                   color: '#808080',
                   fontSize: 28,
@@ -140,9 +140,9 @@ export default {
                 data:this.namesY
             },
             title: [{
-              text: '今日进度图',
-              top:'47%',
-              left:'40%',
+              text: '昨日进度图',
+              top:'55%',
+              left:'38%',
               textStyle:{
                   color: '#808080',
                   fontSize: 28,

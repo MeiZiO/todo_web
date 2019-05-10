@@ -5,7 +5,8 @@ import axios from 'axios'
 import qs from 'qs'
 
 const instance = axios.create({
-    baseURL: "http://192.168.0.103:3000",
+    baseURL: "http://10.20.50.145:3000",
+    // baseURL: "http://192.168.0.103:3000",
     // baseURL: "http://172.20.10.2:3000", // api的base_url http://39.104.64.179:8088
     // baseURL: "http://10.20.50.125:3000", // api的base_url http://39.104.64.179:8088
     // baseURL: "http://10.168.1.235:3000",

@@ -3,7 +3,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import router from './router'
-import store from './store'
+// import store from './store'
 import './registerServiceWorker'
 // import axios from './axios/axios'
 import axios from './axios/fetch'
@@ -39,7 +39,7 @@ Object.keys(filters).forEach(key => {
 
 new Vue({
   router,
-  store,
+  // store,
   render: h => h(App)
 }).$mount('#app')
 

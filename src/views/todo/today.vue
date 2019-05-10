@@ -1,5 +1,9 @@
 <template>
   <div>
+    <Spin size="large" fix v-if="spinShow">
+      <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+      <div>加载中...</div>
+    </Spin>
     <div class="btgroup">
       <ButtonGroup shape="circle">
         <Button @click="add"><Icon type="ios-add" size="26"/></Button>
@@ -67,6 +71,7 @@ import { constants } from 'crypto';
 export default {
   data(){
     return {
+      spinShow: true,
       searchTagFlag: false,
       searchData: [],
       time3: (new Date()).getTime()+1000*6,
@@ -131,6 +136,7 @@ export default {
         data: this.params
       }).then( data => {
         if(data.data.success){
+          this.spinShow = false;
           this.things = data.data.data;
           this.total = data.data.total;
         }else {
@@ -193,7 +199,7 @@ export default {
         if (data.data.success) {
           this.serachTagData = data.data.data;
         }else{
-          this.$Message.success('标签刷新失败，请重试');
+          this.$Message.error('标签刷新失败，请重试');
         }
       });
     },
@@ -205,16 +211,16 @@ export default {
     addModal,detailDra
   },
   mounted () {
-    localStorage.setItem('userId', 1);
+    this.spinShow = true;
     this.$axios({
       method: 'post',
       url: '/init',
       data:{'userid': localStorage.getItem('userId')}
     }).then( data => {
+      this.getDataHandle();
     });
   },
   created() {
-    this.getDataHandle();
   },
 }
 </script>

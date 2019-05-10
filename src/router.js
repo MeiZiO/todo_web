@@ -1,17 +1,27 @@
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Home from './views/main/login.vue'
+
 
 const router = new Router({
   // mode: 'history',
   // base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      redirect: '/todo/today',
-      // component: resolve=> require(['./App.vue'],resolve),
+      path: '/login',
+      name: 'login',
+      component: Home
+    },
+    {
+      path: '/sign',
+      name: 'sign',
+      component: resolve=> require(['./views/main/sign.vue'],resolve),
+    },
+    {
+      path: '/index',
+      name: 'index',
       component: resolve=> require(['./views/main/index.vue'],resolve),
       children: [
+        // {path: '/index', name: 'index',component: resolve=> require(['./views/main/index.vue'],resolve)},
         {path: 'personal/info', name: 'info',component: resolve=> require(['./views/personal/info.vue'],resolve)},
         {path: 'us', name: 'us',component: resolve=> require(['./views/personal/us.vue'],resolve)},
         {path: 'charts/day', name: 'day',component: resolve=> require(['./views/charts/day.vue'],resolve)},
@@ -23,8 +33,22 @@ const router = new Router({
         {path: 'nav/pandect', name: 'pandect',component: resolve=> require(['./views/nav/pandect.vue'],resolve)},
         {path: 'event', name: 'event',component: resolve=> require(['./views/event/list.vue'],resolve)},
         {path: 'dayBefore', name: 'dayBefore',component: resolve=> require(['./views/charts/before.vue'],resolve)},
+        
+
         // {path: 'info', name: 'personnInfo',component: () => import ('./views/personal/info.vue')}
       ]
+    },
+    // {
+    //   path: '/todo/today',
+    //   name: 'today',
+    //   component: resolve=> require(['./views/todo/today.vue'],resolve)
+    // },
+    {
+      path: '',
+      redirect: {name: 'login'},
+      // component: resolve=> require(['./App.vue'],resolve),
+      // component: resolve=> require(['./views/main/index.vue'],resolve),
+     
     },
     // {
     //   path: '/personal',

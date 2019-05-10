@@ -106,7 +106,7 @@ export default {
         if(data.data.success){
           this.$Message.success('修改成功！');
           this.flag = false;
-          this.$emit('getData')
+          this.$parent.getData();
         }else {
           this.$Message.error('修改失败，请稍后重试');
         }
@@ -121,7 +121,7 @@ export default {
         if(data.data.success){
           this.$Message.success('删除成功！');
           this.flag = false;
-          this.$emit('getData')
+          this.$parent.getData();
         }else {
           this.$Message.error('删除失败，请稍后重试');
         }
@@ -135,8 +135,8 @@ export default {
       }).then( data => {
         if(data.data.success){
           this.$Message.success('取消成功！');
-          this.flag = false;
-          this.$emit('getData')
+          this.flag = false;         
+          this.$parent.getData();
         }else {
           this.$Message.error('取消失败，请稍后重试');
         }
