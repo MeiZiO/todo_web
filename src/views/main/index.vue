@@ -2,7 +2,7 @@
   <div class="layout">
     <Layout>
       <Header>
-        <Menu mode="horizontal" theme="dark" active-name="1" on-select="handleNavClick">
+        <Menu mode="horizontal" theme="dark" active-name="2" on-select="handleNavClick">
           <div class="layout-logo"></div>
           <div class="layout-nav">
             <MenuItem name="1" :to="{name:'pandect'}">
@@ -39,7 +39,7 @@
           <BreadcrumbItem>Components</BreadcrumbItem>
           <BreadcrumbItem>Layout</BreadcrumbItem>
         </Breadcrumb> -->
-        <Progress :style="{margin: '16px 0'}" :percent="25" stroke-color="#f3baf7"/>
+        <!-- <Progress :style="{margin: '16px 0'}" :percent="25" stroke-color="#f3baf7"/> -->
         <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
           <Layout>
             <Sider hide-trigger :style="{background: '#fff'}">

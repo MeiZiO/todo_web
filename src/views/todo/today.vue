@@ -167,6 +167,7 @@ export default {
         }else{
           this.params.type = 'time';
         }
+        console.log(this.params.type,'leo');
         this.getData();
       });
     },

@@ -55,6 +55,10 @@
               <p slot="content">{{temp.alertType}}</p>
             </Panel>
             <Panel name="7">
+              结束时间点：<span class="content">{{temp.timepoint}}</span>
+              <p slot="content">如果您没有设置结束时间点，则默认为24:00:00</p>
+            </Panel>
+            <Panel name="8">
               标签：<span class="content">{{temp.tags}}</span>
               <p slot="content">{{temp.tags}}</p>
             </Panel>
@@ -280,11 +284,19 @@ export default {
     pageSizeHandle (size) {
       this.params.rows = size;
       this.params.page = 1;
-      this.getData();
+      if(this.searchName){
+        this.getDataByName();
+      }else{
+        this.getData();
+      }
     },
     pageHandle (index) {
       this.params.page = index;
-      this.getData();
+      if(this.searchName){
+        this.getDataByName();
+      }else{
+        this.getData();
+      }
     },
     getDataByName () {
       this.params.name = this.searchName;
